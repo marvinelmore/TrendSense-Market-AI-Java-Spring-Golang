@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: trendsense-market-ai-postgres
+    environment:
+      POSTGRES_DB: trendsense_market_ai
+      POSTGRES_USER: trendsense_user
+      POSTGRES_PASSWORD: trendsense_pass
+    ports:
+      - "5433:5432"
+    volumes:
+      - trendsense_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  trendsense_postgres_data:
