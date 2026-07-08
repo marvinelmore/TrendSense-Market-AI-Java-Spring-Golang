@@ -1,35 +1,21 @@
-package com.trendsense.market.ai.entity;
-
-import jakarta.persistence.*;
+package com.trendsense.market.ai.dto;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "users")
-public class User {
+public class UserResponse {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String firstName;
     private String lastName;
-
-    @Column(nullable = false, unique = true)
     private String email;
+    private LocalDateTime createdAt;
 
-    private String password;
-
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    public User() {
-    }
-
-    public User(String firstName, String lastName, String email, String password) {
+    public UserResponse(Long id, String firstName, String lastName, String email, LocalDateTime createdAt) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = password;
+        this.createdAt = createdAt;
     }
 
     public Long getId() {
@@ -46,10 +32,6 @@ public class User {
 
     public String getEmail() {
         return email;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public LocalDateTime getCreatedAt() {
