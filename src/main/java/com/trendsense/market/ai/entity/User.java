@@ -22,6 +22,8 @@ public class User {
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    private LocalDateTime updatedAt;
+
     public User() {
     }
 
@@ -52,7 +54,28 @@ public class User {
         return password;
     }
 
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void markUpdated() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 }

@@ -9,6 +9,7 @@ import com.trendsense.market.ai.repository.UserRepository;
 import com.trendsense.market.ai.service.UserService;
 import org.springframework.stereotype.Service;
 import com.trendsense.market.ai.entity.User;
+import com.trendsense.market.ai.dto.UpdateUserRequest;
 
 import java.util.List;
 
@@ -60,5 +61,28 @@ public class UserServiceImpl implements UserService {
                 user.getEmail(),
                 user.getCreatedAt()
         );
+    }
+
+    @Override
+    public UserResponse updateUser(Long id, UpdateUserRequest request) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setEmail(request.getEmail());
+        user.markUpdated();
+
+        User updatedUser = userRepository.save(user);
+
+        return mapToResponse(updatedUser);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+
+        userRepository.delete(user);
     }
 }

@@ -6,6 +6,7 @@ import com.trendsense.market.ai.dto.CreateUserRequest;
 import com.trendsense.market.ai.dto.UserResponse;
 import com.trendsense.market.ai.service.UserService;
 import org.springframework.web.bind.annotation.*;
+import com.trendsense.market.ai.dto.UpdateUserRequest;
 
 @RestController
 @RequestMapping("/api/users")
@@ -36,5 +37,28 @@ public class UserController {
         UserResponse user = userService.getUserById(id);
 
         return ApiResponse.success("User retrieved successfully", user);
+    }
+
+    @PutMapping("/{id}")
+    public ApiResponse<UserResponse> updateUser(
+            @PathVariable Long id,
+            @RequestBody UpdateUserRequest request) {
+
+        UserResponse user = userService.updateUser(id, request);
+
+        return ApiResponse.success(
+                "User updated successfully",
+                user
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public ApiResponse<String> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+
+        return ApiResponse.success(
+                "User deleted successfully",
+                "User with id " + id + " was deleted"
+        );
     }
 }
