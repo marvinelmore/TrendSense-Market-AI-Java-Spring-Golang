@@ -44,12 +44,18 @@ public class PortfolioServiceImpl implements PortfolioService {
 
     @Override
     public List<PortfolioResponse> getPortfoliosByUserId(Long userId) {
-        return List.of();
+        return portfolioRepository.findByUserId(userId)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
     }
 
     @Override
     public PortfolioResponse getPortfolioById(Long id) {
-        return null;
+        Portfolio portfolio = portfolioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Portfolio not found with id: " + id));
+
+        return mapToResponse(portfolio);
     }
 
     private PortfolioResponse mapToResponse(Portfolio portfolio) {

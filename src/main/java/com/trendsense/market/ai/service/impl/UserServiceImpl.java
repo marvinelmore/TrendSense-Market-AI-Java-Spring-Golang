@@ -1,5 +1,8 @@
 package com.trendsense.market.ai.service.impl;
 
+import com.trendsense.market.ai.exception.ResourceNotFoundException;
+import java.util.stream.Collectors;
+
 import com.trendsense.market.ai.dto.CreateUserRequest;
 import com.trendsense.market.ai.dto.UserResponse;
 import com.trendsense.market.ai.repository.UserRepository;
@@ -30,22 +33,32 @@ public class UserServiceImpl implements UserService {
 
         User savedUser = userRepository.save(user);
 
-        return new UserResponse(
-                savedUser.getId(),
-                savedUser.getFirstName(),
-                savedUser.getLastName(),
-                savedUser.getEmail(),
-                savedUser.getCreatedAt()
-        );
+        return mapToResponse(savedUser);
     }
 
     @Override
     public List<UserResponse> getAllUsers() {
-        return List.of();
+        return userRepository.findAll()
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
     }
 
     @Override
     public UserResponse getUserById(Long id) {
-        return null;
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+
+        return mapToResponse(user);
+    }
+
+    private UserResponse mapToResponse(User user) {
+        return new UserResponse(
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getCreatedAt()
+        );
     }
 }

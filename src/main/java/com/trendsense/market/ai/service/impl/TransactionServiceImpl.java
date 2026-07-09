@@ -49,12 +49,20 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<TransactionResponse> getTransactionsByHoldingId(Long holdingId) {
-        return List.of();
+        return transactionRepository.findByHoldingId(holdingId)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
     }
 
     @Override
     public TransactionResponse getTransactionById(Long id) {
-        return null;
+        Transaction transaction = transactionRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Transaction not found with id: " + id));
+
+        return mapToResponse(transaction);
     }
 
     private TransactionResponse mapToResponse(Transaction transaction) {

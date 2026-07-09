@@ -6,6 +6,8 @@ import com.trendsense.market.ai.dto.PortfolioResponse;
 import com.trendsense.market.ai.service.PortfolioService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/portfolios")
 public class PortfolioController {
@@ -21,5 +23,19 @@ public class PortfolioController {
         PortfolioResponse portfolio = portfolioService.createPortfolio(request);
 
         return ApiResponse.success("Portfolio created successfully", portfolio);
+    }
+
+    @GetMapping("/user/{userId}")
+    public ApiResponse<List<PortfolioResponse>> getPortfoliosByUserId(@PathVariable Long userId) {
+        List<PortfolioResponse> portfolios = portfolioService.getPortfoliosByUserId(userId);
+
+        return ApiResponse.success("Portfolios retrieved successfully", portfolios);
+    }
+
+    @GetMapping("/{id}")
+    public ApiResponse<PortfolioResponse> getPortfolioById(@PathVariable Long id) {
+        PortfolioResponse portfolio = portfolioService.getPortfolioById(id);
+
+        return ApiResponse.success("Portfolio retrieved successfully", portfolio);
     }
 }

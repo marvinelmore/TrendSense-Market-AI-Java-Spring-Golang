@@ -46,12 +46,18 @@ public class HoldingServiceImpl implements HoldingService {
 
     @Override
     public List<HoldingResponse> getHoldingsByPortfolioId(Long portfolioId) {
-        return List.of();
+        return holdingRepository.findByPortfolioId(portfolioId)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
     }
 
     @Override
     public HoldingResponse getHoldingById(Long id) {
-        return null;
+        Holding holding = holdingRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Holding not found with id: " + id));
+
+        return mapToResponse(holding);
     }
 
     private HoldingResponse mapToResponse(Holding holding) {
