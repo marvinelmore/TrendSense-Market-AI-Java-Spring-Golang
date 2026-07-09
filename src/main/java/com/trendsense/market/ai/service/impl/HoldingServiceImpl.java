@@ -1,0 +1,68 @@
+package com.trendsense.market.ai.service.impl;
+
+import com.trendsense.market.ai.dto.CreateHoldingRequest;
+import com.trendsense.market.ai.dto.HoldingResponse;
+import com.trendsense.market.ai.entity.Holding;
+import com.trendsense.market.ai.entity.Portfolio;
+import com.trendsense.market.ai.exception.ResourceNotFoundException;
+import com.trendsense.market.ai.repository.HoldingRepository;
+import com.trendsense.market.ai.repository.PortfolioRepository;
+import com.trendsense.market.ai.service.HoldingService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class HoldingServiceImpl implements HoldingService {
+
+    private final HoldingRepository holdingRepository;
+    private final PortfolioRepository portfolioRepository;
+
+    public HoldingServiceImpl(
+            HoldingRepository holdingRepository,
+            PortfolioRepository portfolioRepository
+    ) {
+        this.holdingRepository = holdingRepository;
+        this.portfolioRepository = portfolioRepository;
+    }
+
+    @Override
+    public HoldingResponse createHolding(CreateHoldingRequest request) {
+        Portfolio portfolio = portfolioRepository.findById(request.getPortfolioId())
+                .orElseThrow(() -> new ResourceNotFoundException("Portfolio not found with id: " + request.getPortfolioId()));
+
+        Holding holding = new Holding(
+                request.getSymbol(),
+                request.getAssetType(),
+                request.getQuantity(),
+                request.getAverageBuyPrice(),
+                portfolio
+        );
+
+        Holding savedHolding = holdingRepository.save(holding);
+
+        return mapToResponse(savedHolding);
+    }
+
+    @Override
+    public List<HoldingResponse> getHoldingsByPortfolioId(Long portfolioId) {
+        return List.of();
+    }
+
+    @Override
+    public HoldingResponse getHoldingById(Long id) {
+        return null;
+    }
+
+    private HoldingResponse mapToResponse(Holding holding) {
+        return new HoldingResponse(
+                holding.getId(),
+                holding.getPortfolio().getId(),
+                holding.getSymbol(),
+                holding.getAssetType(),
+                holding.getQuantity(),
+                holding.getAverageBuyPrice(),
+                holding.getCreatedAt()
+        );
+    }
+}
