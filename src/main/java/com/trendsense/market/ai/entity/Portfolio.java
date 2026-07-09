@@ -48,4 +48,22 @@ public class Portfolio {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
+
+    private LocalDateTime updatedAt;
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void markUpdated() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

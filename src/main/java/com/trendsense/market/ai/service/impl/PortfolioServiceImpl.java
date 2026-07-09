@@ -9,6 +9,7 @@ import com.trendsense.market.ai.repository.PortfolioRepository;
 import com.trendsense.market.ai.repository.UserRepository;
 import com.trendsense.market.ai.service.PortfolioService;
 import org.springframework.stereotype.Service;
+import com.trendsense.market.ai.dto.UpdatePortfolioRequest;
 
 import java.util.List;
 
@@ -67,4 +68,27 @@ public class PortfolioServiceImpl implements PortfolioService {
                 portfolio.getCreatedAt()
         );
     }
+
+    @Override
+    public PortfolioResponse updatePortfolio(Long id, UpdatePortfolioRequest request) {
+        Portfolio portfolio = portfolioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Portfolio not found with id: " + id));
+
+        portfolio.setName(request.getName());
+        portfolio.setDescription(request.getDescription());
+        portfolio.markUpdated();
+
+        Portfolio updatedPortfolio = portfolioRepository.save(portfolio);
+
+        return mapToResponse(updatedPortfolio);
+    }
+
+    @Override
+    public void deletePortfolio(Long id) {
+        Portfolio portfolio = portfolioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Portfolio not found with id: " + id));
+
+        portfolioRepository.delete(portfolio);
+    }
+
 }

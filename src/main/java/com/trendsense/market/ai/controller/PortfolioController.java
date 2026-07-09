@@ -1,8 +1,6 @@
 package com.trendsense.market.ai.controller;
 
-import com.trendsense.market.ai.dto.ApiResponse;
-import com.trendsense.market.ai.dto.CreatePortfolioRequest;
-import com.trendsense.market.ai.dto.PortfolioResponse;
+import com.trendsense.market.ai.dto.*;
 import com.trendsense.market.ai.service.PortfolioService;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,4 +36,29 @@ public class PortfolioController {
 
         return ApiResponse.success("Portfolio retrieved successfully", portfolio);
     }
+
+    @PutMapping("/{id}")
+    public ApiResponse<PortfolioResponse> updatePortfolio(
+            @PathVariable Long id,
+            @RequestBody UpdatePortfolioRequest request) {
+
+        PortfolioResponse portfolio = portfolioService.updatePortfolio(id, request);
+
+        return ApiResponse.success(
+                "Portfolio updated successfully",
+                portfolio
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public ApiResponse<String> deletePortfolio(@PathVariable Long id) {
+        portfolioService.deletePortfolio(id);
+
+        return ApiResponse.success(
+                "Portfolio deleted successfully",
+                "Portfolio with id " + id + " was deleted"
+        );
+    }
+
+
 }
