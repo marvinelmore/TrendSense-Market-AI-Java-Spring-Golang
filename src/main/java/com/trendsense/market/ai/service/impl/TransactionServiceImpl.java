@@ -8,6 +8,8 @@ import com.trendsense.market.ai.exception.ResourceNotFoundException;
 import com.trendsense.market.ai.repository.HoldingRepository;
 import com.trendsense.market.ai.repository.TransactionRepository;
 import com.trendsense.market.ai.service.TransactionService;
+import com.trendsense.market.ai.dto.UpdateTransactionRequest;
+
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -63,6 +65,45 @@ public class TransactionServiceImpl implements TransactionService {
                                 "Transaction not found with id: " + id));
 
         return mapToResponse(transaction);
+    }
+
+    @Override
+    public TransactionResponse updateTransaction(
+            Long id,
+            UpdateTransactionRequest request
+    ) {
+        Transaction transaction = transactionRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Transaction not found with id: " + id
+                        )
+                );
+
+        BigDecimal totalAmount =
+                request.getQuantity().multiply(request.getPricePerUnit());
+
+        transaction.setTransactionType(request.getTransactionType());
+        transaction.setQuantity(request.getQuantity());
+        transaction.setPricePerUnit(request.getPricePerUnit());
+        transaction.setTotalAmount(totalAmount);
+        transaction.markUpdated();
+
+        Transaction updatedTransaction =
+                transactionRepository.save(transaction);
+
+        return mapToResponse(updatedTransaction);
+    }
+
+    @Override
+    public void deleteTransaction(Long id) {
+        Transaction transaction = transactionRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Transaction not found with id: " + id
+                        )
+                );
+
+        transactionRepository.delete(transaction);
     }
 
     private TransactionResponse mapToResponse(Transaction transaction) {

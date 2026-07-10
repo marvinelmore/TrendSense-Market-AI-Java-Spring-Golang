@@ -16,11 +16,11 @@ public class Transaction {
     private BigDecimal quantity;
     private BigDecimal pricePerUnit;
     private BigDecimal totalAmount;
+    private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "holding_id", nullable = false)
     private Holding holding;
-
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public Transaction() {
@@ -66,5 +66,29 @@ public class Transaction {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void markUpdated() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType;
+    }
+
+    public void setQuantity(BigDecimal quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setPricePerUnit(BigDecimal pricePerUnit) {
+        this.pricePerUnit = pricePerUnit;
+    }
+
+    public void setTotalAmount(BigDecimal totalAmount) {
+        this.totalAmount = totalAmount;
     }
 }
