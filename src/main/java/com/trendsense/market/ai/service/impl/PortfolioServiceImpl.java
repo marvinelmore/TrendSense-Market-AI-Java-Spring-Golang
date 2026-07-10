@@ -8,8 +8,9 @@ import com.trendsense.market.ai.exception.ResourceNotFoundException;
 import com.trendsense.market.ai.repository.PortfolioRepository;
 import com.trendsense.market.ai.repository.UserRepository;
 import com.trendsense.market.ai.service.PortfolioService;
-import org.springframework.stereotype.Service;
 import com.trendsense.market.ai.dto.UpdatePortfolioRequest;
+
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

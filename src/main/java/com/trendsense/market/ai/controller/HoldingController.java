@@ -3,6 +3,7 @@ package com.trendsense.market.ai.controller;
 import com.trendsense.market.ai.dto.ApiResponse;
 import com.trendsense.market.ai.dto.CreateHoldingRequest;
 import com.trendsense.market.ai.dto.HoldingResponse;
+import com.trendsense.market.ai.dto.UpdateHoldingRequest;
 import com.trendsense.market.ai.service.HoldingService;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,4 +44,28 @@ public class HoldingController {
 
         return ApiResponse.success("Holding retrieved successfully", holding);
     }
+
+    @PutMapping("/{id}")
+    public ApiResponse<HoldingResponse> updateHolding(
+            @PathVariable Long id,
+            @RequestBody UpdateHoldingRequest request) {
+
+        HoldingResponse holding = holdingService.updateHolding(id, request);
+
+        return ApiResponse.success(
+                "Holding updated successfully",
+                holding
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public ApiResponse<String> deleteHolding(@PathVariable Long id) {
+        holdingService.deleteHolding(id);
+
+        return ApiResponse.success(
+                "Holding deleted successfully",
+                "Holding with id " + id + " was deleted"
+        );
+    }
+
 }

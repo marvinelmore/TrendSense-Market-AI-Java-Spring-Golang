@@ -2,6 +2,7 @@ package com.trendsense.market.ai.service.impl;
 
 import com.trendsense.market.ai.dto.CreateHoldingRequest;
 import com.trendsense.market.ai.dto.HoldingResponse;
+import com.trendsense.market.ai.dto.UpdateHoldingRequest;
 import com.trendsense.market.ai.entity.Holding;
 import com.trendsense.market.ai.entity.Portfolio;
 import com.trendsense.market.ai.exception.ResourceNotFoundException;
@@ -71,4 +72,29 @@ public class HoldingServiceImpl implements HoldingService {
                 holding.getCreatedAt()
         );
     }
+
+    @Override
+    public HoldingResponse updateHolding(Long id, UpdateHoldingRequest request) {
+        Holding holding = holdingRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Holding not found with id: " + id));
+
+        holding.setSymbol(request.getSymbol());
+        holding.setAssetType(request.getAssetType());
+        holding.setQuantity(request.getQuantity());
+        holding.setAverageBuyPrice(request.getAverageBuyPrice());
+        holding.markUpdated();
+
+        Holding updatedHolding = holdingRepository.save(holding);
+
+        return mapToResponse(updatedHolding);
+    }
+
+    @Override
+    public void deleteHolding(Long id) {
+        Holding holding = holdingRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Holding not found with id: " + id));
+
+        holdingRepository.delete(holding);
+    }
+
 }

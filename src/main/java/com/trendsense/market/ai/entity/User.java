@@ -21,7 +21,6 @@ public class User {
     private String password;
 
     private LocalDateTime createdAt = LocalDateTime.now();
-
     private LocalDateTime updatedAt;
 
     public User() {

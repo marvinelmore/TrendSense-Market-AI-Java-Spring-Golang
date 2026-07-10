@@ -22,6 +22,7 @@ public class Holding {
     private Portfolio portfolio;
 
     private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
 
     public Holding() {
     }
@@ -61,4 +62,33 @@ public class Holding {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void markUpdated() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public void setAssetType(String assetType) {
+        this.assetType = assetType;
+    }
+
+    public void setQuantity(BigDecimal quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setAverageBuyPrice(BigDecimal averageBuyPrice) {
+        this.averageBuyPrice = averageBuyPrice;
+    }
+
+    public void setPortfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
+    }
+
 }

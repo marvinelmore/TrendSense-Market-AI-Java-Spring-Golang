@@ -19,6 +19,7 @@ public class Portfolio {
     private User user;
 
     private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
 
     public Portfolio() {
     }
@@ -48,8 +49,6 @@ public class Portfolio {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-
-    private LocalDateTime updatedAt;
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
